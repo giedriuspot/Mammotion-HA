@@ -151,6 +151,11 @@
         "name": "Clear maps and area names"
       }
     },
+    "camera": {
+      "map_camera": {
+        "name": "Map"
+      }
+    },
     "switch": {
       "area": {
         "name": "Area {name}"

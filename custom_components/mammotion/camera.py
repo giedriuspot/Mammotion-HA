@@ -396,3 +396,5 @@ async def async_setup_platform_services(  # noqa: C901
     hass.services.async_register("mammotion", "move_left", handle_move_left)
     hass.services.async_register("mammotion", "move_right", handle_move_right)
     hass.services.async_register("mammotion", "move_backward", handle_move_backward)
+    
+"""Mammotion bmoeo2-codex"""

@@ -60,7 +60,7 @@ Once the integration is set up, you can control and monitor your Mammotion mower
 
 ### Map display
 
-This integration creates a `camera` entity that draws the mower's path. You can display it using the [Lovelace Xiaomi Vacuum Map card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card) by pointing the card's `camera_entity` to the map camera.
+This integration creates a `camera` entity that draws the mower's path and a companion `vacuum` entity for compatibility with map cards. When using the [Lovelace Xiaomi Vacuum Map card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card), set the card's `entity` to the mower's vacuum entity and `camera_entity` to the map camera.
 
 ## Troubleshooting 🔧
 

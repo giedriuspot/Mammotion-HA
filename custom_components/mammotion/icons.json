@@ -34,6 +34,11 @@
         "default": "mdi:map-marker-remove"
       }
     },
+    "camera": {
+      "map_camera": {
+        "default": "mdi:map"
+      }
+    },
     "sensor": {
       "gps_stars": {
         "default": "mdi:satellite-uplink"

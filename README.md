@@ -26,6 +26,7 @@ This integration allows you to control and monitor Mammotion products, e.g robot
 - Start a mow based on configuration
 - Start an existing scheduled task/s
 - More features being added all the time!
+- Render the mower's path as a map camera for use with front-end map cards
 
 ## Prerequisites 📋
 > [!WARNING]
@@ -56,6 +57,10 @@ This integration is not available in the default HACS store. You will need to ad
 See the wiki for how to [get started](https://github.com/mikey0000/Mammotion-HA/wiki/Getting-Started)
 
 Once the integration is set up, you can control and monitor your Mammotion mower using Home Assistant. 🎉
+
+### Map display
+
+This integration creates a `camera` entity that draws the mower's path. You can display it using the [Lovelace Xiaomi Vacuum Map card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card) by pointing the card's `camera_entity` to the map camera.
 
 ## Troubleshooting 🔧
 

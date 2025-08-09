@@ -116,6 +116,7 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
     ) -> None:
         """Initialize the map camera entity."""
         super().__init__(coordinator, entity_description.key)
+        Camera.__init__(self)
         self.coordinator = coordinator
         self.entity_description = entity_description
         self._attr_translation_key = entity_description.key
@@ -395,3 +396,5 @@ async def async_setup_platform_services(  # noqa: C901
     hass.services.async_register("mammotion", "move_left", handle_move_left)
     hass.services.async_register("mammotion", "move_right", handle_move_right)
     hass.services.async_register("mammotion", "move_backward", handle_move_backward)
+    
+"""Mammotion bmoeo2-codex"""

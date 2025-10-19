@@ -147,8 +147,10 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
             for pt in getattr(nav_data, "data_couple", [])
         ]
         _LOGGER.warning(
+            "points %s: ",
             points
         )
+
         if not points:
             return None
 
@@ -162,6 +164,11 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         scale_x = width / (max_x - min_x or 1)
         scale_y = height / (max_y - min_y or 1)
 
+        _LOGGER.warning(
+            "min_x: %s, min_y: %s, max_x: %s, max_y: %s, scale_x: %s, scale_y: %s, width: %s, height: %s",
+            min_x, min_y, max_x, max_y, scale_x, scale_y, width, height
+        )
+
         image = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(image)
        
@@ -173,8 +180,9 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
             for nav_data in data_list:
                 data_couple = getattr(nav_data, "data_couple", [])
                 _LOGGER.warning(
+                    "data_couple %s: ",
                     data_couple
-                 )
+                )
                 for pt in data_couple:
                     x = getattr(pt, "x", 0)
                     y = getattr(pt, "y", 0)
@@ -185,6 +193,16 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
                     if prev is not None:
                         draw.line([prev, (px, py)], fill="green", width=2)
                     prev = (px, py)
+
+
+        prev = None
+
+        for x, y in points:
+            px = int((x - min_x) * scale_x)
+            py = int((y - min_y) * scale_y)
+            if prev is not None:
+                draw.line([prev, (px, py)], fill="red", width=2)
+            prev = (px, py)
 
         buf = BytesIO()
         image.save(buf, format="PNG")

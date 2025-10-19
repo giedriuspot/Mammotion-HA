@@ -22,7 +22,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up Mammotion vacuum entities."""
-    mowers = entry.runtime_data
+    mowers = entry.runtime_data.mowers
     entities = [MammotionVacuumEntity(mower.reporting_coordinator) for mower in mowers]
     async_add_entities(entities)
 

@@ -132,9 +132,9 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         # _LOGGER.warning(
         #     getattr(self.coordinator.data, "mqtt_properties", None)
         # )
-        _LOGGER.warning(
-            getattr(self.coordinator.data, "work", None)
-        )
+        # _LOGGER.warning(
+        #     getattr(self.coordinator.data, "work", None)
+        # )
         location = getattr(self.coordinator.data, "location", None)
 
         device = getattr(location, "device", None)
@@ -151,9 +151,18 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
 		# work_zone = 887163320154895948
 
         # vision_info locations work
+        report_data = getattr(self.coordinator.data, "report_data", None) 
+        report_data_locations = getattr(report_data, "locations", None)[0]
         _LOGGER.warning(
-            getattr(self.coordinator.data, "report_data", None) 
+             "report_data_locations: %s",
+             report_data_locations
         )
+
+        # report_data_vision_info = getattr(report_data, "vision_info", None) 
+        # report_data = getattr(report_data, "work", None) 
+        # _LOGGER.warning(
+        #     getattr(self.coordinator.data, "report_data", None) 
+        # )
         if not map_data:
             return None
 
@@ -163,10 +172,6 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
             for nav_data in getattr(frame_list, "data", [])
             for pt in getattr(nav_data, "data_couple", [])
         ]
-        _LOGGER.warning(
-            "points %s: ",
-            points
-        )
 
         if not points:
             return None
@@ -195,8 +200,14 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         prtkyx = int((rtkx - min_x) * scale_x)
         prtkyy = int((max_y - rtky) * scale_y)
        
+        _LOGGER.warning(
+            "rtk: %s, x: %s, y: %s",
+            rtk, prtkyx, prtkyy
+        )
+
         radius = 3
 
+        # TODO rename variables
         left_up = (prtkyx - radius, prtkyy - radius)
         right_down = (prtkyx + radius, prtkyy + radius)
         bounding_box = [left_up, right_down]

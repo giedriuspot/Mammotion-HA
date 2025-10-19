@@ -172,12 +172,15 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
             data_list = getattr(frame_list, "data", [])
             for nav_data in data_list:
                 data_couple = getattr(nav_data, "data_couple", [])
+                _LOGGER.warning(
+                    data_couple
+                 )
                 for pt in data_couple:
                     x = getattr(pt, "x", 0)
                     y = getattr(pt, "y", 0)
 
                     px = int((x - min_x) * scale_x)
-                    py = int((y - min_y) * scale_y) * -1
+                    py = int((y - min_y) * scale_y)
 
                     if prev is not None:
                         draw.line([prev, (px, py)], fill="green", width=2)

@@ -153,16 +153,7 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         # vision_info locations work
         report_data = getattr(self.coordinator.data, "report_data", None) 
         report_data_locations = getattr(report_data, "locations", None)[0]
-        _LOGGER.warning(
-             "report_data_locations: %s",
-             report_data_locations
-        )
 
-        # report_data_vision_info = getattr(report_data, "vision_info", None) 
-        # report_data = getattr(report_data, "work", None) 
-        # _LOGGER.warning(
-        #     getattr(self.coordinator.data, "report_data", None) 
-        # )
         if not map_data:
             return None
 
@@ -186,10 +177,10 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         scale_x = width / (max_x - min_x or 1)
         scale_y = height / (max_y - min_y or 1)
 
-        _LOGGER.warning(
-            "min_x: %s, min_y: %s, max_x: %s, max_y: %s, scale_x: %s, scale_y: %s, width: %s, height: %s",
-            min_x, min_y, max_x, max_y, scale_x, scale_y, width, height
-        )
+        # _LOGGER.warning(
+        #     "min_x: %s, min_y: %s, max_x: %s, max_y: %s, scale_x: %s, scale_y: %s, width: %s, height: %s",
+        #     min_x, min_y, max_x, max_y, scale_x, scale_y, width, height
+        # )
 
         image = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(image)
@@ -199,10 +190,10 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         pmowerx = int((mowerx - min_x) * scale_x)
         pmowery = int((max_y - mowery) * scale_y)
 
-        _LOGGER.warning(
-            "report_data_locations: %s, mowerx: %s, mowery: %s, pmowerx: %s, pmowery: %s",
-            report_data_locations, mowerx, mowery, pmowerx, pmowery
-        )
+        # _LOGGER.warning(
+        #     "report_data_locations: %s, mowerx: %s, mowery: %s, pmowerx: %s, pmowery: %s",
+        #     report_data_locations, mowerx, mowery, pmowerx, pmowery
+        # )
 
         radius = 6
 

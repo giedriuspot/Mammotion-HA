@@ -122,20 +122,14 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         self.entity_description = entity_description
         self._attr_translation_key = entity_description.key
         self._attr_model = coordinator.device.deviceName
-        _LOGGER.warning(
-            "Init map camera"
-        )
 
     async def async_camera_image(
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
         """Return a rendered map image."""
-        _LOGGER.warning(
-            "map camera generate image "
-        )
         map_data = getattr(self.coordinator.data, "map", None)
         _LOGGER.warning(
-            map_data
+            self.coordinator.data
         )
         if not map_data:
             return None
@@ -179,10 +173,6 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
             data_list = getattr(frame_list, "data", [])
             for nav_data in data_list:
                 data_couple = getattr(nav_data, "data_couple", [])
-                _LOGGER.warning(
-                    "data_couple %s: ",
-                    data_couple
-                )
                 for pt in data_couple:
                     x = getattr(pt, "x", 0)
                     y = getattr(pt, "y", 0)
@@ -192,21 +182,9 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
                     
                     if prev is not None:
                         draw.line([prev, (px, py)], fill="green", width=2)
-                        _LOGGER.warning(
-                            "prev: %s, imgpx: %s, imgpy: %s",
-                            prev, px, py
-                        )      
+    
                     prev = (px, py)
 
-
-        prev = None
-
-        for x, y in points:
-            px = int((x - min_x) * scale_x)
-            py = int((y - min_y) * scale_y)
-            if prev is not None:
-                draw.line([prev, (px-2, py-2)], fill="red", width=1)
-            prev = (px, py)
 
         buf = BytesIO()
         image.save(buf, format="PNG")

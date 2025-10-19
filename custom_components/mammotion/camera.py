@@ -164,13 +164,24 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
 
         image = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(image)
-        prev = None
-        for x, y in points:
-            px = int((x - min_x) * scale_x)
-            py = int((y - min_y) * scale_y)
-            if prev is not None:
-                draw.line([prev, (px, py)], fill="green", width=2)
-            prev = (px, py)
+       
+
+        area = getattr(map_data, "area", {})
+        for frame_list in area.values():
+            prev = None
+            data_list = getattr(frame_list, "data", [])
+            for nav_data in data_list:
+                data_couple = getattr(nav_data, "data_couple", [])
+                for pt in data_couple:
+                    x = getattr(pt, "x", 0)
+                    y = getattr(pt, "y", 0)
+
+                    px = int((x - min_x) * scale_x)
+                    py = int((y - min_y) * scale_y) * -1
+
+                    if prev is not None:
+                        draw.line([prev, (px, py)], fill="green", width=2)
+                    prev = (px, py)
 
         buf = BytesIO()
         image.save(buf, format="PNG")

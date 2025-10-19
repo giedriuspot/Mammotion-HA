@@ -194,16 +194,36 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         image = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(image)
        
+        mowerx = getattr(report_data_locations, "real_pos_x", 0) / 10000
+        mowery = getattr(report_data_locations, "real_pos_y", 0)/ 10000
+        pmowerx = int((mowerx - min_x) * scale_x)
+        pmowery = int((max_y - mowery) * scale_y)
+
+        _LOGGER.warning(
+            "report_data_locations: %s, mowerx: %s, mowery: %s, pmowerx: %s, pmowery: %s",
+            report_data_locations, mowerx, mowery, pmowerx, pmowery
+        )
+
+        radius = 6
+
+        # TODO rename variables
+        left_up = (pmowerx - radius, pmowery - radius)
+        right_down = (pmowerx + radius, pmowery + radius)
+        bounding_box = [left_up, right_down]
+
+        draw.ellipse(bounding_box, fill="blue")
+
+        
 
         rtkx = getattr(rtk, "latitude", 0)
         rtky = getattr(rtk, "longitude", 0)
         prtkyx = int((rtkx - min_x) * scale_x)
         prtkyy = int((max_y - rtky) * scale_y)
        
-        _LOGGER.warning(
-            "rtk: %s, x: %s, y: %s",
-            rtk, prtkyx, prtkyy
-        )
+        # _LOGGER.warning(
+        #     "rtk: %s, x: %s, y: %s",
+        #     rtk, prtkyx, prtkyy
+        # )
 
         radius = 3
 

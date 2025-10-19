@@ -128,8 +128,19 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
     ) -> bytes | None:
         """Return a rendered map image."""
         map_data = getattr(self.coordinator.data, "map", None)
+        # params -> items ->coordinate
+        # _LOGGER.warning(
+        #     getattr(self.coordinator.data, "mqtt_properties", None)
+        # )
         _LOGGER.warning(
-            self.coordinator.data
+            getattr(self.coordinator.data, "work", None)
+        )
+        _LOGGER.warning(
+            getattr(self.coordinator.data, "location", None)
+        )
+        # vision_info locations work
+        _LOGGER.warning(
+            getattr(self.coordinator.data, "report_data", None) 
         )
         if not map_data:
             return None

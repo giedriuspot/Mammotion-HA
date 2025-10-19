@@ -135,9 +135,21 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         _LOGGER.warning(
             getattr(self.coordinator.data, "work", None)
         )
-        _LOGGER.warning(
-            getattr(self.coordinator.data, "location", None)
-        )
+        location = getattr(self.coordinator.data, "location", None)
+
+        device = getattr(location, "device", None)
+        rtk = getattr(location, "RTK", None)
+        dock = getattr(location, "dock", None)
+        orientation = getattr(location, "orientation", None)
+        work_zone = getattr(location, "work_zone", None)
+
+        # device = Point(latitude = 54.801063571259235, longitude = 25.334809488635063), 
+		# RTK = Point(latitude = 0.95646007, longitude = 0.44217803), 
+		# dock = Dock(latitude = -0.9367, longitude = -3.4716, rotation = 136), 
+		# position_type = 1, 
+		# orientation = -13, 
+		# work_zone = 887163320154895948
+
         # vision_info locations work
         _LOGGER.warning(
             getattr(self.coordinator.data, "report_data", None) 
@@ -177,6 +189,18 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         image = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(image)
        
+        dockx = getattr(dock, "latitude", 0)
+        docky = getattr(dock, "longitude", 0)
+        pdockx = int((dockx - min_x) * scale_x)
+        pdocky = int((max_y - docky) * scale_y)
+       
+        radius = 3
+
+        left_up = (pdockx - radius, pdocky - radius)
+        right_down = (pdockx + radius, pdocky + radius)
+        bounding_box = [left_up, right_down]
+
+        draw.ellipse(bounding_box, fill="red")
 
         area = getattr(map_data, "area", {})
         for frame_list in area.values():

@@ -205,7 +205,7 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
             px = int((x - min_x) * scale_x)
             py = int((y - min_y) * scale_y)
             if prev is not None:
-                draw.line([prev, (px, py)], fill="red", width=2)
+                draw.line([prev, (px-2, py-2)], fill="red", width=2)
             prev = (px, py)
 
         buf = BytesIO()

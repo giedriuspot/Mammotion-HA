@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from contextlib import suppress
+from typing import TypeAlias
+
 from aiohttp import ClientConnectorError
 from homeassistant.components import bluetooth
 from homeassistant.components.http import StaticPathConfig
@@ -37,7 +40,6 @@ from .const import (
     CONF_BLE_DEVICES,
     CONF_CONNECT_DATA,
     CONF_DEVICE_DATA,
-    CONF_DEVICE_NAME,
     CONF_MAMMOTION_DATA,
     CONF_REGION_DATA,
     CONF_SESSION_DATA,
@@ -69,12 +71,13 @@ PLATFORMS: list[Platform] = [
     Platform.SELECT,
     Platform.CAMERA,
     Platform.UPDATE,
+    Platform.VACUUM,
 ]
 
-type MammotionConfigEntry = ConfigEntry[MammotionDevices]
+MammotionConfigEntry: TypeAlias = ConfigEntry[list[MammotionMowerData]]
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: MammotionConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: MammotionConfigEntry) -> bool:  # noqa: C901
     """Set up Mammotion from a config entry."""
 
     addresses = entry.data.get(CONF_BLE_DEVICES, {})
@@ -115,12 +118,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: MammotionConfigEntry) ->
                     cloud_client.set_http(mammotion_http)
                 await mammotion.initiate_cloud_connection(account, cloud_client)
         except ClientConnectorError as err:
-            raise ConfigEntryNotReady(err)
+            raise ConfigEntryNotReady from err
         except EXPIRED_CREDENTIAL_EXCEPTIONS as exc:
             LOGGER.debug(exc)
             await mammotion.login_and_initiate_cloud(account, password, True)
         except UnretryableException as err:
-            raise ConfigEntryError(err)
+            raise ConfigEntryError from err
 
         if mqtt_client := mammotion.mqtt_list.get(account):
             store_cloud_credentials(hass, entry, mqtt_client.cloud_client)
@@ -199,11 +202,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: MammotionConfigEntry) ->
                         map_coordinator=map_coordinator,
                         error_coordinator=error_coordinator,
                     )
-                )
-                try:
+                )                
+                with suppress(Exception):
                     await map_coordinator.async_request_refresh()
-                except:
-                    """Do nothing for now."""
 
             for rtk in mammotion_rtk_devices:
                 rtk_coordinator = MammotionRTKCoordinator(hass, entry, rtk, mqtt_client)
@@ -369,10 +370,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: MammotionConfigEntry) -
 
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
         for mower in entry.runtime_data.mowers:
-            try:
+            with suppress(TimeoutError):
                 await mower.api.remove_device(mower.name)
-            except TimeoutError:
-                """Do nothing as this sometimes occurs with disconnecting BLE."""
     return unload_ok
 
 

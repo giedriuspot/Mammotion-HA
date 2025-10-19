@@ -163,6 +163,16 @@
         "name": "Relocate charging station"
       }
     },
+    "camera": {
+      "map_camera": {
+        "name": "Map"
+      }
+    },
+    "vacuum": {
+      "vacuum": {
+        "name": "Vacuum"
+      }
+    },
     "switch": {
       "area": {
         "name": "Area {name}"

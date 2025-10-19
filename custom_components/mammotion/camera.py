@@ -189,6 +189,21 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         image = Image.new("RGB", (width, height), "white")
         draw = ImageDraw.Draw(image)
        
+
+        rtkx = getattr(rtk, "latitude", 0)
+        rtky = getattr(rtk, "longitude", 0)
+        prtkyx = int((rtkx - min_x) * scale_x)
+        prtkyy = int((max_y - rtky) * scale_y)
+       
+        radius = 3
+
+        left_up = (prtkyx - radius, prtkyy - radius)
+        right_down = (prtkyx + radius, prtkyy + radius)
+        bounding_box = [left_up, right_down]
+
+        draw.ellipse(bounding_box, fill="black")
+
+
         dockx = getattr(dock, "latitude", 0)
         docky = getattr(dock, "longitude", 0)
         pdockx = int((dockx - min_x) * scale_x)
@@ -201,6 +216,8 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         bounding_box = [left_up, right_down]
 
         draw.ellipse(bounding_box, fill="red")
+
+
 
         area = getattr(map_data, "area", {})
         for frame_list in area.values():

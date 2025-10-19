@@ -142,10 +142,12 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
 
         points = [
             (getattr(pt, "x", 0), getattr(pt, "y", 0))
-            for plan in getattr(map_data, "plan", {}).values()
+            for plan in getattr(map_data, "area", {}).values()
             for pt in getattr(plan, "data", [])
         ]
-
+        _LOGGER.warning(
+            points
+        )
         if not points:
             return None
 

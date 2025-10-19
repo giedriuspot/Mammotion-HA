@@ -189,7 +189,10 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
 
                     px = int((x - min_x) * scale_x)
                     py = int((y - min_y) * scale_y)
-
+                    _LOGGER.warning(
+                        "imgpx: %s, imgpy: %s",
+                        px, py
+                    )
                     if prev is not None:
                         draw.line([prev, (px, py)], fill="green", width=2)
                     prev = (px, py)
@@ -200,6 +203,10 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         for x, y in points:
             px = int((x - min_x) * scale_x)
             py = int((y - min_y) * scale_y)
+            _LOGGER.warning(
+                "oldpx: %s, oldpy: %s",
+                px, py
+            )
             if prev is not None:
                 draw.line([prev, (px, py)], fill="red", width=2)
             prev = (px, py)

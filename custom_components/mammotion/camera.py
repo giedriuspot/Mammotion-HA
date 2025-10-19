@@ -122,12 +122,21 @@ class MammotionMapCamera(MammotionBaseEntity, Camera):
         self.entity_description = entity_description
         self._attr_translation_key = entity_description.key
         self._attr_model = coordinator.device.deviceName
+        _LOGGER.warning(
+            "Init map camera"
+        )
 
     async def async_camera_image(
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
         """Return a rendered map image."""
+        _LOGGER.warning(
+            "map camera generate image "
+        )
         map_data = getattr(self.coordinator.data, "map", None)
+        _LOGGER.warning(
+            map_data
+        )
         if not map_data:
             return None
 
